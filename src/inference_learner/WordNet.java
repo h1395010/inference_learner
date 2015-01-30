@@ -3,6 +3,7 @@ package inference_learner;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.ISynsetID;
 import edu.mit.jwi.item.IWord;
 import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.POS;
 import edu.mit.jwi.item.Pointer;
 import edu.mit.jwi.morph.WordnetStemmer;
 
@@ -21,7 +23,9 @@ public class WordNet
 	private String wnhome;
 	private String path;
 	private URL url;
-	private IDictionary dict;
+	private static IDictionary dict;
+	
+	
 
 	public WordNet() throws IOException
 	{ 
@@ -36,40 +40,62 @@ public class WordNet
 	}
 	
 	
-	public void getHypernyms( String inut_word ) throws IOException
+	public List<String> getHypernyms( String input_word, POS pos ) throws IOException
     {	
+		//make a NEW list of hypernyms every time this is called
+		List<String> generated_hypernyms = new ArrayList<>();
+		
+		//System.out.println( "    input word: " + input_word );
+		// get the synset of 'input_word'
+		IIndexWord idxWord = dict.getIndexWord( input_word, pos);
+		
+		if(dict.getIndexWord( input_word, pos ) == null)
+		{
+			generated_hypernyms.add(input_word);
+		}
+		else
+		{
+			generated_hypernyms.add(input_word);
+			
+			IWordID wordID = idxWord.getWordIDs().get(0); // 1st meaning
+			IWord word = dict.getWord( wordID );
+			ISynset synset = word.getSynset();
     	
-    	// get the synset of 'input_word'
-    	//IIndexWord idxWord = dict . getIndexWord (inut_word, POS . NOUN ) ;
-		IIndexWord idxWord = dict . getIndexWord (inut_word, null ) ;
-    	IWordID wordID = idxWord . getWordIDs () . get (0) ; // 1st meaning
-    	IWord word = dict . getWord ( wordID ) ;
-    	ISynset synset = word . getSynset () ;
+			// get the hypernyms
+			List < ISynsetID > hypernyms = synset.getRelatedSynsets( Pointer.HYPERNYM );
     	
-    	// get the hypernyms
-    	List < ISynsetID > hypernyms =
-    	synset . getRelatedSynsets ( Pointer . HYPERNYM ) ;
-    	
-    	// print out each h y p e r n y m s id and synonyms
-    	List < IWord > words ;
-    	for( ISynsetID sid : hypernyms ) {
-    	words = dict . getSynset ( sid ) . getWords () ;
-    	System . out . print ( sid + " {") ;
-    	for( Iterator < IWord > i = words . iterator () ; i . hasNext () ;) {
-    	System . out . print ( i . next () . getLemma () ) ;
-    	if( i . hasNext () )
-    	System . out . print (", ") ;
-    	}
-    	System . out . println ("}") ;
-    	}
-    	 
-    	 
+			if( hypernyms.size() > 0)
+			{
+				// print out each hypernyms id and synonyms
+				List < IWord > words;
+				// sid, how the hypernyms are organized (in wordnet)
+				for( ISynsetID sid : hypernyms ) 
+				{
+					words = dict.getSynset( sid ).getWords ();
+					
+					//generated_hypernyms.add(input_word);
+					for( Iterator <IWord> i = words.iterator(); i.hasNext(); ) 
+					{
+						generated_hypernyms.add( i.next().getLemma() );
+					}
+				}
+			}
+		}
+		return generated_hypernyms;
     }
-    
-	public void getStem(String word)
+	
+	public String getStem(String word)
 	{
-     //JWS ws = new JWS("C:/Program Files/WordNet","2.1");  
-	 WordnetStemmer stem =  new WordnetStemmer( dict );
-	 System.out.println("test" + stem.findStems(word, null) );
+		WordnetStemmer stem =  new WordnetStemmer( dict );
+		 
+		List<String> stemmed_words = stem.findStems(word,  POS.VERB);
+		
+		if ( !stemmed_words.isEmpty() )
+			return stemmed_words.get(0);
+		else
+			return word;
 	}
+	
 }
+	
+

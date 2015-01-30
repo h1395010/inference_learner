@@ -40,5 +40,6 @@ public class Main
 		make_inferences.inference_maker(ontology, confidence, ruleCount, joints, subject2index, sentences, object2index );
 		
 		confidence.confidence( ruleCount );
+		
 	}
 }

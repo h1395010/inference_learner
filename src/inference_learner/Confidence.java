@@ -1,6 +1,7 @@
 package inference_learner;
 
 import static java.util.Collections.reverseOrder;
+
 import java.util.Map;
 
 public class Confidence 
@@ -14,6 +15,7 @@ public class Confidence
 			ruleCount.put(sentence, 0);
 		}
 		ruleCount.put(sentence, ruleCount.get(sentence) + 1);
+		
 	}
 	
 	public void confidence( Map<Sentence, Integer> ruleCount )

@@ -1,5 +1,6 @@
 package inference_learner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,14 +15,17 @@ public class Ontology
 //	private Set<String> joints = new HashSet<>();
 	
 	//related to regex reader, pattern matcher
-	public void addSentence( Sentence s, 
-									List<Sentence> sentences,  
-									Map<String,List<Integer>> subject2index, 
-									Map<String,List<Integer>> object2index, 
-									Set<String> joints )    
+	public static void addSentence( Sentence s, 
+							 List<Sentence> sentences,  
+							 Map<String,List<Integer>> subject2index, 
+							 Map<String,List<Integer>> object2index, 
+							 Set<String> joints ) throws IOException    
 	{
-		
 		sentences.add( s );
+		
+		//DataPreprocessing data_preprocessing = new DataPreprocessing();
+		//data_preprocessing.dataPreprocessing( s.getSubject(), s.getObject(), s.getVerb(), sentences );
+		
 		
 		List<Integer> subind = subject2index.get( s.getSubject() );
 		if( subind == null )
@@ -30,7 +34,6 @@ public class Ontology
 			subject2index.put( s.getSubject(), subind );
 		}
 		subind.add( sentences.size() - 1 );
-
 		
 		List<Integer> objind = object2index.get( s.getObject() );
 		if( objind == null )

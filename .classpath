@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="/home/matthias/Workbench/SUTD/2_January/learning_first-order_horn_clauses_from_web_text/wordnet/java_wordnet_interface/edu.mit.jwi_2.3.3.jar"/>
+	<classpathentry kind="lib" path="/home/matthias/Workbench/SUTD/2_January/learning_first-order_horn_clauses_from_web_text/wordnet/java_wordnet_interface/edu.mit.jwi_2.3.3.jar" sourcepath="/home/matthias/Workbench/SUTD/2_January/learning_first-order_horn_clauses_from_web_text/wordnet/java_wordnet_interface/edu"/>
+	<classpathentry kind="lib" path="/home/matthias/Workbench/SUTD/2_January/learning_first-order_horn_clauses_from_web_text/wordnet/RiTa/RiTa/library/rita.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

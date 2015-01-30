@@ -1,5 +1,6 @@
 package inference_learner;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class RegEx
 									  List<Sentence> sentences, 
 									  Map<String,List<Integer>> subject2index, 
 									  Map<String,List<Integer>> object2index,
-									  Set<String> joints )
+									  Set<String> joints ) throws IOException
 	{
 		Pattern p = Pattern.compile("'(.*?)'\\('(.*?)',\\s*'(.*?)'\\)\\.");
 		//p.matcher refers to pattern!
@@ -28,7 +29,9 @@ public class RegEx
 			String object  = m.group(2);
 			String subject = m.group(3);
         
-			ontology.addSentence( new Sentence( verb, object, subject ), sentences,  subject2index, object2index, joints);
+			//this is where we add the sentence to ontology, but first we need some proprocessing. 
+			//ontology.addSentence( new Sentence( verb, object, subject ), sentences,  subject2index, object2index, joints);
+			DataPreprocessing.dataPreprocessing( subject, object, verb, sentences,  subject2index, object2index, joints );
 		}
 	}
 }
